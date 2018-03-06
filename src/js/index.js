@@ -24,12 +24,13 @@ class Todo extends Model {
 
 // TodoList Collection class
 class TodoList extends Collection {
-  constructor(options) {
-    super(options);
-    // *Hold a reference to this collection's model.*
-    this.model = Todo;
-    // *Save all of the todo items under the `'todos'` namespace.*
-    this.localStorage = new LocalStorage('todos-traceur-backbone');
+
+  get model(){
+    return Todo;
+  }
+
+  get localStorage(){
+    return new LocalStorage('todos-traceur-backbone');
   }
 
   completed() {
@@ -62,16 +63,21 @@ class TodoView extends View {
 
   constructor(options) {
     super(options);
-    // *... is a list tag.*
-    this.tagName = 'li';
-    // *Cache the template function for a single item.*
-    this.template = _.template($('#item-template').html());
-    this.input = '';
-    // *Define the DOM events specific to an item.
-
     this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'destroy', this.remove);
     this.listenTo(this.model, 'visible', this.toggleVisible);
+  }
+
+  get tagName() {
+    return 'li';
+  }
+
+  get template() {
+    return _.template($('#item-template').html());
+  }
+
+  input() {
+    return '';
   }
 
   get events() {
