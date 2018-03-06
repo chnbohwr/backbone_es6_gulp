@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const browserSync = require('browser-sync').create();
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
-const eventStream = require('event-stream');
 const inject = require('gulp-inject');
 
 const distFolder = 'dist';
@@ -22,7 +21,7 @@ gulp.task('js', () => gulp
   .pipe(browserSync.stream())
 );
 
-gulp.task('template', () => gulp
+gulp.task('html', () => gulp
   .src('src/*.html')
   .pipe(inject(gulp.src(['src/lib/*.js', 'src/js/*.js'], { read: false }), { relative: true }))
   .pipe(gulp.dest('./dist'))
@@ -35,7 +34,7 @@ gulp.task('server', ['default'], () => {
     server: `./${distFolder}`
   });
   gulp.watch('src/js/*.js', ['js']);
-  gulp.watch('src/*.html', ['template']);
+  gulp.watch('src/*.html', ['html']);
 });
 
-gulp.task('default', ['js', 'lib', 'template']);
+gulp.task('default', ['js', 'lib', 'html']);
